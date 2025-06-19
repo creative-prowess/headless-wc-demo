@@ -1,6 +1,15 @@
 import { gql, useQuery } from '@apollo/client'
 import Layout from '../components/Layout'
 import ProductGrid from '../components/ProductGrid'
+import { fetchProducts } from '../lib/fetchProducts';
+
+export async function getStaticProps() {
+  const products = await fetchProducts();
+  return {
+    props: { products },
+    revalidate: 60, // ISR: revalidate every 60 seconds
+  };
+}
 
 const GET_PRODUCTS = gql`
   query GetProducts {
@@ -30,20 +39,10 @@ const GET_PRODUCTS = gql`
   }
 `
 
-export default function Home() {
-  const { error, data } = useQuery(GET_PRODUCTS)
-
- 
-  if (error) {
-    console.error('GraphQL error:', error)
-    return <p className="text-center mt-10 text-red-600">Error loading products.</p>
-  }
-
-  const products = data?.products?.nodes || []
+export default function Home({ products }) {
 
   return (
     <Layout>
-
       <ProductGrid products={products} />
     </Layout>
   )

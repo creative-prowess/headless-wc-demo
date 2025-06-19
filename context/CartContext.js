@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState } from 'react'
 
-const CartContext = createContext()
+export const CartContext = createContext()
 
 export function CartProvider({ children }) {
   const [cartItems, setCartItems] = useState([])
@@ -26,7 +26,15 @@ export function CartProvider({ children }) {
     }
   }, [cartItems])
 
+const cartTotal = cartItems.reduce((total, item) => {
+  const itemTotal = typeof item.price === 'number' ? item.price * item.quantity : 0
+  return total + itemTotal
+}, 0)
+
   const addToCart = (item) => {
+     if (typeof item.price !== 'number') {
+    console.warn('Item added without a valid price:', item)
+  }
     setCartItems((prevCart) => {
       const existing = prevCart.find((p) => p.id === item.id)
       if (existing) {
@@ -50,7 +58,8 @@ export function CartProvider({ children }) {
   }
 
   return (
-    <CartContext.Provider value={{ cartItems, addToCart, removeFromCart, clearCart }}>
+  <CartContext.Provider value={{ cartItems, cartTotal, addToCart, removeFromCart, clearCart }}>
+
       {children}
     </CartContext.Provider>
   )

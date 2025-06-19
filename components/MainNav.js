@@ -14,10 +14,10 @@ export default function MainNav() {
       <nav className="hidden lg:flex gap-6 font-medium text-sm text-gray-700">
         <Link href="/">Home</Link>
         <Link href="/shop">Shop</Link>
-        <Link href="/men">Men</Link>
-        <Link href="/women">Women</Link>
-        <Link href="/blog">Blog</Link>
-        <Link href="/contact">Contact</Link>
+        <Link href="#">Men</Link>
+        <Link href="#">Women</Link>
+        <Link href="#">Blog</Link>
+        <Link href="#">Contact</Link>
       </nav>
     </div>
   )
