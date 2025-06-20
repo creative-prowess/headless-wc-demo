@@ -30,7 +30,7 @@ export default async function handler(req, res) {
         amount:   BigInt(Math.round(amount * 100)), // in cents
         currency: 'USD',
       },
-      locationId:        process.env.SQUARE_LOCATION_ID,
+      locationId:        process.env.NEXT_PUBLIC_SQUARE_LOCATION_ID,
       buyerEmailAddress: buyerEmail,
     }
 
