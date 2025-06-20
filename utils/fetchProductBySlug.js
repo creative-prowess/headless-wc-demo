@@ -48,11 +48,6 @@ export async function fetchProductBySlug(slug) {
             price
           }
 
-          ... on SubscriptionProduct {
-            price
-            stockStatus
-          }
-
           ... on VariableSubscriptionProduct {
             price
             stockStatus
