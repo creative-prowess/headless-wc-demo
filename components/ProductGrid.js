@@ -3,11 +3,11 @@ import ProductCard from './ProductCard'
 import QuickViewModal from './QuickView/QuickViewModal'
 
 export default function ProductGrid({ products = [], loading = false }) {
-  const [modalProduct, setModalProduct] = useState(null)
+  const [modalSlug, setModalSlug] = useState(null)
 
-const handleQuickView = (product) => {
-  setModalSlug(product.slug)
-}
+  const handleQuickView = (product) => {
+    setModalSlug(product.slug)
+  }
 
   if (loading) {
     return (
@@ -47,11 +47,11 @@ const handleQuickView = (product) => {
         ))}
       </div>
 
-      {modalProduct && (
+      {modalSlug && (
         <QuickViewModal
-    slug={modalSlug}
-    isOpen={!!modalSlug}
-    onClose={() => setModalSlug(null)}
+          slug={modalSlug}
+          isOpen={!!modalSlug}
+          onClose={() => setModalSlug(null)}
         />
       )}
     </>
