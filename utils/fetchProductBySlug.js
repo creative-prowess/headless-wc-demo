@@ -14,11 +14,46 @@ export async function fetchProductBySlug(slug) {
             sourceUrl
             altText
           }
+
           ... on SimpleProduct {
             price
             stockStatus
           }
+
           ... on VariableProduct {
+            price
+            stockStatus
+            variations {
+              nodes {
+                id
+                name
+                price
+                stockStatus
+                attributes {
+                  nodes {
+                    name
+                    value
+                  }
+                }
+              }
+            }
+          }
+
+          ... on ExternalProduct {
+            price
+            externalUrl
+          }
+
+          ... on GroupProduct {
+            price
+          }
+
+          ... on SubscriptionProduct {
+            price
+            stockStatus
+          }
+
+          ... on VariableSubscriptionProduct {
             price
             stockStatus
             variations {
