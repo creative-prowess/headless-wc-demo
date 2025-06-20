@@ -7,25 +7,29 @@ import ProductGrid from '@/components/ProductGrid'
 export async function getStaticProps() {
   const { data } = await client.query({
     query: gql`
-      query GetProducts {
-        products(first: 20) {
-          nodes {
-            slug
-            name
-            image { sourceUrl altText }
-            ... on SimpleProduct   { price }
-            ... on VariableProduct { price }
-            ... on ExternalProduct { price }
-          }
-        }
-      }
+query GetProducts {
+  products(first: 20) {
+    nodes {
+      id
+      slug
+      name
+      stockStatus
+      image { sourceUrl altText }
+      ... on SimpleProduct   { price }
+      ... on VariableProduct { price }
+      ... on ExternalProduct { price }
+    }
+  }
+}
     `,
   })
   const products = data.products.nodes.map((p) => ({
+    id: p.id,
     slug:  p.slug,
     name:  p.name,
     image: p.image,
     price: p.price ?? '0',
+    stockStatus: p.stockStatus,
   }))
   return { props: { products }, revalidate: 60 }
 }
