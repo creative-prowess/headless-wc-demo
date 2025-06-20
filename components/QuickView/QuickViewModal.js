@@ -5,7 +5,7 @@ import QuantityInput from './QuantityInput'
 import VariationSelector from './VariationSelector'
 import { useCart } from '@/context/CartContext'
 import { useToast } from '@/context/ToastContext'
-import { fetchProductBySlug } from '../utils/fetchProductBySlug'
+import { fetchProductBySlug } from '@/utils/fetchProductBySlug'
 
 export default function QuickViewModal({ isOpen, onClose, slug }) {
   const { addToCart } = useCart()
