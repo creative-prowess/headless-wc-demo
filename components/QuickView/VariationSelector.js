@@ -1,3 +1,4 @@
+import { fetchProductBySlug } from '@/lib/fetchProductsList'
 import { useState, useEffect } from 'react'
 
 export default function VariationSelector({
