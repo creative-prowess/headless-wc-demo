@@ -29,8 +29,8 @@ export default function CheckoutForm({ cartTotal, formData }) {
       // if we've already attached, skip
       if (container.querySelector('iframe')) return
 
-      const appId      = process.env.NEXT_PUBLIC_SQUARE_APP_ID
-      const locationId = process.env.NEXT_PUBLIC_SQUARE_LOCATION_ID
+      const appId      = process.env.SQUARE_APP_ID
+      const locationId = process.env.SQUARE_LOCATION_ID
       if (!appId || !locationId) {
         setError('Payment configuration error')
         return
