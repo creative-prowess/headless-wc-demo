@@ -27,7 +27,6 @@ query GetProducts {
       }
       ... on ExternalProduct {
         price
-        stockStatus
       }
     }
   }
