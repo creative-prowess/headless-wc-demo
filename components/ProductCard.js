@@ -5,7 +5,8 @@ import CompareToggle from './CompareToggle'
 import QuickViewToggle from './QuickViewToggle'
 import QuickViewModal from './QuickView/QuickViewModal'
 import { fetchProductBySlug } from '@/utils/fetchProductBySlug'
-export default function ProductCard({ product }) {
+import Image from 'next/image'
+export default function ProductCard({ product, priority = false }) {
 
   const handleQuickView = async () => {
     const fullProduct = await fetchProductBySlug(product.slug)
@@ -40,11 +41,16 @@ export default function ProductCard({ product }) {
       )}
 
       <Link href={`/products/${product.slug}`}>
-        <img
-          src={product.image?.sourceUrl}
-          alt={product.image?.altText || product.name}
-          className="w-full h-64 object-cover rounded-t-lg"
-        />
+<div className="relative w-full h-64">
+<Image
+  src={product.image?.sourceUrl || '/placeholder.webp'}
+  alt={product.image?.altText || product.name}
+  fill
+  className="object-cover rounded-t-lg"
+  sizes="(max-width: 768px) 100vw, 33vw"
+  priority={priority}
+/>
+</div>
         <div className="p-4">
           <h2 className="text-lg font-semibold">{product.name}</h2>
           <p className="text-green-600 mt-1">{product.price}</p>

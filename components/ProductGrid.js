@@ -32,8 +32,12 @@ export default function ProductGrid({ products = [], loading = false }) {
   // 3️⃣ otherwise render normally
   return (
     <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-      {products.map((product) => (
-        <ProductCard key={product.slug} product={product} />
+      {products.map((product, index) => (
+          <ProductCard
+    key={product.slug}
+    product={product}
+    priority={index < 5}
+  />
       ))}
     </div>
   )
