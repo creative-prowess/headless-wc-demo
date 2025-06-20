@@ -13,24 +13,40 @@ query GetProducts {
       id
       slug
       name
-      stockStatus
-      image { sourceUrl altText }
-      ... on SimpleProduct   { price }
-      ... on VariableProduct { price }
-      ... on ExternalProduct { price }
+      image {
+        sourceUrl
+        altText
+      }
+      ... on SimpleProduct {
+        price
+        stockStatus
+      }
+      ... on VariableProduct {
+        price
+        stockStatus
+      }
+      ... on ExternalProduct {
+        price
+        stockStatus
+      }
     }
   }
 }
     `,
   })
-  const products = data.products.nodes.map((p) => ({
-    id: p.id,
-    slug:  p.slug,
-    name:  p.name,
-    image: p.image,
-    price: p.price ?? '0',
-    stockStatus: p.stockStatus,
-  }))
+const products = data.products.nodes.map((p) => ({
+  id: p.id,
+  slug: p.slug,
+  name: p.name,
+  image: p.image,
+  price: p.price ?? '0',
+  stockStatus:
+    p.__typename === 'SimpleProduct' ||
+    p.__typename === 'VariableProduct' ||
+    p.__typename === 'ExternalProduct'
+      ? p.stockStatus
+      : 'OUT_OF_STOCK',
+}))
   return { props: { products }, revalidate: 60 }
 }
 
