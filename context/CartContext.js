@@ -1,17 +1,18 @@
-import { createContext, useContext, useEffect, useState } from 'react'
+// context/CartContext.js
+import { createContext, useContext, useEffect, useState, useMemo } from 'react'
 
-export const CartContext = createContext()
+const CartContext = createContext()
 
 export function CartProvider({ children }) {
   const [cartItems, setCartItems] = useState([])
 
-  // 🔁 Load cart from localStorage on mount
+  // Load cart from localStorage on mount
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      const storedCart = localStorage.getItem('cart')
-      if (storedCart) {
+      const stored = localStorage.getItem('cart')
+      if (stored) {
         try {
-          setCartItems(JSON.parse(storedCart))
+          setCartItems(JSON.parse(stored))
         } catch (e) {
           console.error('Failed to parse cart from localStorage', e)
         }
@@ -19,47 +20,54 @@ export function CartProvider({ children }) {
     }
   }, [])
 
-  // 💾 Save cart to localStorage whenever it changes
+  // Persist cart whenever it changes
   useEffect(() => {
     if (typeof window !== 'undefined') {
       localStorage.setItem('cart', JSON.stringify(cartItems))
     }
   }, [cartItems])
 
-const cartTotal = cartItems.reduce((total, item) => {
-  const itemTotal = typeof item.price === 'number' ? item.price * item.quantity : 0
-  return total + itemTotal
-}, 0)
+  // Calculate total price
+  const cartTotal = useMemo(() => {
+    return cartItems.reduce((sum, item) => {
+      const price = typeof item.price === 'number' ? item.price : 0
+      const qty   = typeof item.quantity === 'number' ? item.quantity : 0
+      return sum + price * qty
+    }, 0)
+  }, [cartItems])
 
-  const addToCart = (item) => {
-     if (typeof item.price !== 'number') {
-    console.warn('Item added without a valid price:', item)
-  }
-    setCartItems((prevCart) => {
-      const existing = prevCart.find((p) => p.id === item.id)
+  function addToCart(item) {
+    setCartItems((prev) => {
+      const existing = prev.find((p) => p.id === item.id)
       if (existing) {
-        return prevCart.map((p) =>
+        return prev.map((p) =>
           p.id === item.id
-            ? { ...p, quantity: p.quantity + item.quantity }
+            ? { ...p, quantity: p.quantity + (item.quantity || 1) }
             : p
         )
-      } else {
-        return [...prevCart, { ...item, quantity: item.quantity || 1 }]
       }
+      return [...prev, { ...item, quantity: item.quantity || 1 }]
     })
   }
 
-  const removeFromCart = (productId) => {
+  function removeFromCart(productId) {
     setCartItems((prev) => prev.filter((item) => item.id !== productId))
   }
 
-  const clearCart = () => {
+  function clearCart() {
     setCartItems([])
   }
 
   return (
-  <CartContext.Provider value={{ cartItems, cartTotal, addToCart, removeFromCart, clearCart }}>
-
+    <CartContext.Provider
+      value={{
+        cartItems,
+        cartTotal,
+        addToCart,
+        removeFromCart,
+        clearCart,
+      }}
+    >
       {children}
     </CartContext.Provider>
   )

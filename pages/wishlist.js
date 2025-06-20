@@ -12,7 +12,7 @@ export default function WishlistPage() {
           <p>Your wishlist is empty.</p>
         ) : (
           wishlist.map((item) => (
-            <div key={item.id} className="border p-4 mb-3 rounded flex justify-between items-center">
+            <div key={item.slug} className="border p-4 mb-3 rounded flex justify-between items-center">
               <div>
                 <h2 className="font-medium">{item.name}</h2>
                 <p className="text-sm text-gray-500">{item.price}</p>

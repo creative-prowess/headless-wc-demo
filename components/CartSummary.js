@@ -1,4 +1,6 @@
+// components/CartSummary.js
 import React from 'react'
+import Link from 'next/link'
 
 export default function CartSummary({ subtotal, shipping, tax, total }) {
   return (
@@ -20,9 +22,13 @@ export default function CartSummary({ subtotal, shipping, tax, total }) {
         <span>Order total</span>
         <span>${total.toFixed(2)}</span>
       </div>
-      <button className="w-full bg-purple-600 hover:bg-purple-700 text-white py-3 rounded font-semibold">
+   <Link
+        href="/checkout"
+        className="block w-full bg-purple-600 hover:bg-purple-700 text-white py-3 rounded font-semibold text-center"
+      >
         Checkout
-      </button>
+      </Link>
     </div>
   )
 }
+
