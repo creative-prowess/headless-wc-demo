@@ -1,42 +1,38 @@
 import { useState, useEffect } from 'react'
 
 export default function VariationSelector({
-  variations = [],
+  variations,
   selectedVariation,
   setSelectedVariation,
   selectedAttributes,
   setSelectedAttributes
 }) {
-  // Defensive: if variations is empty, don't proceed
-  if (!Array.isArray(variations) || !variations.length) return null
-
   // Create a map of all attributes and possible values
   const attributeMap = {}
-
   variations.forEach(variation => {
-    variation.attributes?.nodes?.forEach(attr => {
+    variation.attributes?.nodes.forEach(attr => {
       if (!attributeMap[attr.name]) attributeMap[attr.name] = new Set()
       attributeMap[attr.name].add(attr.value)
     })
   })
 
-  Object.keys(attributeMap).forEach((key) => {
-    attributeMap[key] = Array.from(attributeMap[key])
-  })
-
+   Object.keys(attributeMap).forEach((key) => {
+    attributeMap[key] = Array.from(attributeMap[key]);
+  });
+  // Convert Set → Array
   const allAttributes = Object.entries(attributeMap).map(([name, values]) => ({
     name,
-    options: values
+    options: Array.from(values)
   }))
 
   useEffect(() => {
     const matched = variations.find(variation =>
-      variation.attributes?.nodes?.every(attr =>
+      variation.attributes.nodes.every(attr =>
         selectedAttributes[attr.name] === attr.value
       )
     )
     setSelectedVariation(matched || null)
-  }, [selectedAttributes, setSelectedVariation, variations])
+  }, [selectedAttributes, setSelectedVariation])
 
   const handleChange = (attributeName, value) => {
     setSelectedAttributes(prev => ({
@@ -47,7 +43,7 @@ export default function VariationSelector({
 
   if (!allAttributes.length) return null
 
-  return (
+return (
     <div className="space-y-4">
       {Object.keys(attributeMap).map((attrName) => (
         <div key={attrName}>
@@ -69,5 +65,5 @@ export default function VariationSelector({
         </div>
       ))}
     </div>
-  )
+  );
 }
