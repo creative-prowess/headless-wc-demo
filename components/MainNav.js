@@ -9,6 +9,8 @@ export default function MainNav() {
     src="/grannynaturals-logo.webp"
     alt="Granny's Naturals Logo"
     className="w-[150px] object-contain"
+    width="150"
+    height="150"
   />
 </Link>
       <nav className="hidden lg:flex gap-6 font-medium text-sm text-gray-700">
