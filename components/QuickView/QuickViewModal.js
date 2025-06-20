@@ -18,7 +18,7 @@ export default function QuickViewModal({ isOpen, onClose, product }) {
   useEffect(() => {
     if (!product?.variations?.nodes?.length) return
     const init = {}
-    product.variations.nodes[0].attributes?.nodes.forEach(({ name, value }) => {
+product?.variations?.nodes?.[0]?.attributes?.nodes?.forEach(({ name, value }) => {
       init[name] = value
     })
     setSelectedAttributes(init)
@@ -26,10 +26,9 @@ export default function QuickViewModal({ isOpen, onClose, product }) {
 
   // Update selectedVariation when attributes change
   useEffect(() => {
-    if (!product?.variations?.nodes?.length) return
-    const match = product.variations.nodes.find((v) =>
-      v.attributes.nodes.every((attr) => selectedAttributes[attr.name] === attr.value)
-    )
+const match = product?.variations?.nodes?.find((v) =>
+  v.attributes?.nodes?.every((attr) => selectedAttributes[attr.name] === attr.value)
+)
     setSelectedVariation(match || null)
   }, [selectedAttributes])
 
