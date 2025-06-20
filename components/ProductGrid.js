@@ -1,8 +1,14 @@
-// components/ProductGrid.js
+import { useState } from 'react'
 import ProductCard from './ProductCard'
+import QuickViewModal from './QuickView/QuickViewModal'
 
 export default function ProductGrid({ products = [], loading = false }) {
-  // 1️⃣ show skeletons while loading
+  const [modalProduct, setModalProduct] = useState(null)
+
+  const handleQuickView = (product) => {
+    setModalProduct(product)
+  }
+
   if (loading) {
     return (
       <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
@@ -20,7 +26,6 @@ export default function ProductGrid({ products = [], loading = false }) {
     )
   }
 
-  // 2️⃣ once loaded, if still empty, show “no products”
   if (!products.length) {
     return (
       <div className="text-center py-20 text-gray-500">
@@ -29,16 +34,26 @@ export default function ProductGrid({ products = [], loading = false }) {
     )
   }
 
-  // 3️⃣ otherwise render normally
   return (
-    <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-      {products.map((product, index) => (
+    <>
+      <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+        {products.map((product, index) => (
           <ProductCard
-    key={product.slug}
-    product={product}
-    priority={index < 5}
-  />
-      ))}
-    </div>
+            key={product.slug}
+            product={product}
+            priority={index < 5}
+            onQuickView={() => handleQuickView(product)}
+          />
+        ))}
+      </div>
+
+      {modalProduct && (
+        <QuickViewModal
+          product={modalProduct}
+          isOpen={!!modalProduct}
+          onClose={() => setModalProduct(null)}
+        />
+      )}
+    </>
   )
 }
