@@ -23,10 +23,6 @@ export default function MainNav() {
       <nav className="hidden lg:flex gap-6 font-medium text-sm text-gray-700">
         <Link href="/">Home</Link>
         <Link href="/shop">Shop</Link>
-        <Link href="/men">Men</Link>
-        <Link href="/women">Women</Link>
-        <Link href="/blog">Blog</Link>
-        <Link href="/contact">Contact</Link>
       </nav>
 
       {/* Mobile Toggle Button */}
@@ -47,10 +43,6 @@ export default function MainNav() {
           <nav className="flex flex-col items-start gap-4 p-4 font-medium text-sm text-gray-700">
             <Link href="/" onClick={() => setIsMobileOpen(false)}>Home</Link>
             <Link href="/shop" onClick={() => setIsMobileOpen(false)}>Shop</Link>
-            <Link href="/men" onClick={() => setIsMobileOpen(false)}>Men</Link>
-            <Link href="/women" onClick={() => setIsMobileOpen(false)}>Women</Link>
-            <Link href="/blog" onClick={() => setIsMobileOpen(false)}>Blog</Link>
-            <Link href="/contact" onClick={() => setIsMobileOpen(false)}>Contact</Link>
           </nav>
         </div>
       )}
