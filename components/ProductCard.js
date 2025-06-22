@@ -5,6 +5,8 @@ import QuickViewToggle from './QuickViewToggle'
 import Image from 'next/image'
 
 export default function ProductCard({ product, priority = false, onQuickView }) {
+  const displayPrice = typeof product.price === 'object' ? null : product.price
+
   return (
     <div className="relative border rounded-lg shadow transition-transform transform hover:scale-[1.02] group overflow-hidden">
       
@@ -33,7 +35,7 @@ export default function ProductCard({ product, priority = false, onQuickView }) 
           />
         </div>
         <div className="p-4">
-          <h2 className="text-lg font-semibold">{product.name}</h2>
+          <h2 className="text-lg font-semibold">{product.name}</h2>     
           <p className="text-green-600 mt-1">{product.price}</p>
         </div>
       </Link>

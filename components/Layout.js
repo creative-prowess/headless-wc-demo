@@ -10,7 +10,7 @@ export default function Layout({ children }) {
 <footer className="bg-gray-100 text-center text-sm text-gray-600 p-4">
   &copy; {new Date().getFullYear()} Granny’s{' '}
   <Link href="/shop">
-    <a className="text-blue-600 hover:underline">Naturals</a>
+    <div className="text-blue-600 hover:underline">Naturals</div>
   </Link>
 </footer>
     </div>
