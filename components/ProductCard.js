@@ -97,18 +97,18 @@ export default function ProductCard({ product, onQuickView, priority = false, on
           />
         </Link>
 
-      {/* Wishlist, Compare, Quick View Buttons */}
-      <div className="absolute top-2 right-2 z-10 space-y-2 opacity-0 group-hover:opacity-100 transform -translate-y-4 group-hover:translate-y-0 transition">
-        <div className="w-10 h-10 bg-white border border-gray-300 rounded-md flex items-center justify-center">
-          <WishlistToggle product={product} />
+        {/* Wishlist, Compare, Quick View Buttons */}
+        <div className="absolute top-2 right-2 z-10 space-y-2 opacity-0 group-hover:opacity-100 transform -translate-y-4 group-hover:translate-y-0 transition">
+          <div className="w-10 h-10 bg-white border border-gray-300 rounded-md flex items-center justify-center">
+            <WishlistToggle product={product} />
+          </div>
+          <div className="w-10 h-10 bg-white border border-gray-300 rounded-md flex items-center justify-center">
+            <CompareToggle product={product} />
+          </div>
+          <div className="w-10 h-10 bg-white border border-gray-300 rounded-md flex items-center justify-center">
+            <QuickViewToggle onClick={onQuickView} />
+          </div>
         </div>
-        <div className="w-10 h-10 bg-white border border-gray-300 rounded-md flex items-center justify-center">
-          <CompareToggle product={product} />
-        </div>
-        <div className="w-10 h-10 bg-white border border-gray-300 rounded-md flex items-center justify-center">
-          <QuickViewToggle onClick={onQuickView} />
-        </div>
-      </div>
       </div>
 
       <div className="p-4">
@@ -118,13 +118,10 @@ export default function ProductCard({ product, onQuickView, priority = false, on
         </Link>
 
         <div className="flex items-center mb-2">
-          {/* Full stars */}
           {Array.from({ length: fullStars }).map((_, i) => (
             <span key={i} className="text-yellow-400">★</span>
           ))}
-          {/* Half star */}
           {halfStar && <span className="text-yellow-400">☆</span>}
-          {/* Empty (blank) stars */}
           {Array.from({ length: emptyStars }).map((_, i) => (
             <span key={i} className="text-gray-300">☆</span>
           ))}
@@ -149,9 +146,21 @@ export default function ProductCard({ product, onQuickView, priority = false, on
         </div>
 
         <div className="mt-4 flex items-center space-x-3">
-          <button onClick={handleAdd} disabled={!canBuy || loading} className={`flex-1 py-2 text-white font-semibold rounded ${ canBuy ? 'bg-orange-600 hover:bg-orange-700' : 'bg-gray-400 cursor-not-allowed' }`}>
-            {loading ? 'Adding…' : canBuy ? 'Add to Cart' : 'Unavailable'}
-          </button>
+          {canBuy ? (
+            <button
+              onClick={handleAdd}
+              disabled={loading}
+              className={`flex-1 py-2 text-white font-semibold rounded bg-orange-600 hover:bg-orange-700`}
+            >
+              {loading ? 'Adding…' : 'Add to Cart'}
+            </button>
+          ) : (
+            <Link href={`/products/${product.slug}`} className="flex-1">
+              <button className="w-full py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded">
+                View Product
+              </button>
+            </Link>
+          )}
         </div>
       </div>
     </div>
