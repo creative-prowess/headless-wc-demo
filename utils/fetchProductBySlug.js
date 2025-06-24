@@ -1,3 +1,4 @@
+// utils/fetchProductBySlug.js
 import { gql } from '@apollo/client'
 import client from '@/lib/apolloClient'
 
@@ -10,10 +11,7 @@ export async function fetchProductBySlug(slug) {
           name
           slug
           shortDescription
-          image {
-            sourceUrl
-            altText
-          }
+
           ... on SimpleProduct {
             price
             stockStatus
@@ -21,20 +19,24 @@ export async function fetchProductBySlug(slug) {
           ... on VariableProduct {
             price
             stockStatus
-            variations {
+            variations(first: 50) {
               nodes {
                 id
-                name
                 price
                 stockStatus
                 attributes {
-                  nodes {
-                    name
-                    value
-                  }
+                  nodes { name value }
                 }
               }
             }
+          }
+          ... on ExternalProduct {
+            price
+          }
+
+          image {
+            sourceUrl
+            altText
           }
         }
       }
@@ -42,5 +44,20 @@ export async function fetchProductBySlug(slug) {
     variables: { slug },
   })
 
-  return data.product || null
+  const p = data.product
+  if (!p) {
+    throw new Error(`Product with slug "${slug}" not found`)
+  }
+
+  return {
+    id:               p.id,
+    slug:             p.slug,
+    name:             p.name,
+    shortDescription: p.shortDescription,
+    price:            p.price ?? '0',
+    stockStatus:      p.stockStatus,
+    image:            p.image,
+    variations:       p.variations?.nodes || [],
+    seo:              p.seo,
+  }
 }
