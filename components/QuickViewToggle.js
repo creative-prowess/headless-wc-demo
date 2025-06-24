@@ -36,6 +36,7 @@ export default function QuickViewToggle({ onClick, slug }) {
   return (
     <button
       onMouseEnter={() => {
+        if (!slug) return
         client.query({
           query: GET_PRODUCT,
           variables: { slug },
