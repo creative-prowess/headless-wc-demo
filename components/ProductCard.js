@@ -6,7 +6,7 @@ import CompareToggle from './CompareToggle'
 import QuickViewToggle from './QuickViewToggle'
 import { useCart } from '@/context/CartContext'
 import { useToast } from '@/context/ToastContext'
-import ProductGrid from './ProductGrid'
+
 
 export default function ProductCard({ product, onQuickView, priority = false, onDelete }) {
   const { addToCart } = useCart()
@@ -88,12 +88,12 @@ export default function ProductCard({ product, onQuickView, priority = false, on
       )}
 
       <div className="relative group">
-        <Link href={`/products/${product.slug}`} className="block w-full h-64 bg-gray-100">
+        <Link href={`/products/${product.slug}`} className="block w-full h-auto bg-gray-100">
           <Image
             src={product.image?.sourceUrl || '/placeholder.webp'}
             alt={product.image?.altText || product.name}
-            width={400} height={400}
-            className="object-cover w-full h-full"
+            width={230} height={230}
+            className="object-cover w-full h-auto"
             priority={priority}
           />
         </Link>
