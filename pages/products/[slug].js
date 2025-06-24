@@ -1,12 +1,14 @@
-import Head from 'next/head'
+
 import { gql } from '@apollo/client'
 import client from '@/lib/apolloClient'
 import Layout from '@/components/Layout'
 import { useCart } from '@/context/CartContext'
 import { useToast } from '@/context/ToastContext'
 import { useState, useEffect } from 'react'
+import Head from 'next/head'
+import Image from 'next/image'
 
-export default function ProductPage({ product }) {
+export default function ProductPage({ product, priority = true }) {
   const { addToCart } = useCart()
   const { showToast } = useToast()
 
@@ -82,27 +84,39 @@ export default function ProductPage({ product }) {
 
   return (
     <Layout>
-      <Head>
-        <title>{product.name}</title>
-        <meta
-          name="description"
-          content={product.shortDescription?.replace(/<[^>]+>/g, '')}
-        />
-      </Head>
+ <Head>
+  <title>{product.seo?.title || product.name}</title>
+  <meta name="description" content={product.seo?.description || ''} />
+  <link rel="canonical" href={product.seo?.canonical || `https://grannysnaturals.com/products/${product.slug}`} />
+
+  {/* OpenGraph */}
+  <meta property="og:title" content={product.seo?.opengraphTitle || ''} />
+  <meta property="og:description" content={product.seo?.opengraphDescription || ''} />
+  <meta property="og:image" content={product.seo?.opengraphImage || ''} />
+
+  {/* Twitter */}
+  <meta name="twitter:title" content={product.seo?.twitterTitle || ''} />
+  <meta name="twitter:description" content={product.seo?.twitterDescription || ''} />
+  <meta name="twitter:image" content={product.seo?.twitterImage || ''} />
+</Head>
 
       <nav className="text-sm text-gray-500 mb-4">
-        <div className="max-w-6xl mx-auto px-4">
+        <div className="max-w-7xl mx-auto px-4">
           Home / {product.productCategories.nodes[0]?.name || 'Category'} /{' '}
           <span className="font-semibold text-gray-900">{product.name}</span>
         </div>
       </nav>
 
-      <div className="max-w-6xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <img
-          src={product.image.sourceUrl}
-          alt={product.image.altText || product.name}
-          className="w-full rounded-lg shadow-lg"
-        />
+      <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-3 gap-8">
+                     <Image
+                    src={product.image?.sourceUrl || '/placeholder.webp'}
+                    alt={product.image?.altText || product.name}
+                    width={600}
+                    height={600}
+                    className="w-full rounded-lg shadow-lg"
+                    priority={priority}
+                  />
+
 
         <div className="lg:col-span-2 space-y-6">
           <h1 className="text-2xl font-bold">{product.name}</h1>
@@ -203,6 +217,18 @@ export async function getStaticProps({ params }) {
           slug
           sku
           shortDescription
+seo {
+  title
+  description
+  canonicalUrl
+  openGraph {
+    title
+    description
+    image {
+      secureUrl
+    }
+  }
+}
           image {
             sourceUrl
             altText
