@@ -7,7 +7,7 @@ import QuickViewToggle from './QuickViewToggle'
 import { useCart } from '@/context/CartContext'
 import { useToast } from '@/context/ToastContext'
 
-export default function ProductCard({ product, onQuickView, priority = false, onDelete }) {
+export default function ProductCard({ product, onQuickView, priority = true, onDelete }) {
   const { addToCart } = useCart()
   const { showToast } = useToast()
 
