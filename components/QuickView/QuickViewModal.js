@@ -7,7 +7,36 @@ import QuantityInput from './QuantityInput'
 import VariationSelector from './VariationSelector'
 import { useCart } from '@/context/CartContext'
 import { useToast } from '@/context/ToastContext'
-import { fetchProductBySlug } from '@/utils/fetchProductBySlug'
+import { useLazyQuery, gql } from '@apollo/client'
+
+const GET_PRODUCT = gql`
+  query GetProductBySlug($slug: ID!) {
+    product(id: $slug, idType: SLUG) {
+      id
+      name
+      slug
+      shortDescription
+      image { sourceUrl altText }
+
+      ... on SimpleProduct {
+        price
+        stockStatus
+      }
+      ... on VariableProduct {
+        price
+        stockStatus
+        variations(first: 50) {
+          nodes {
+            id
+            price
+            stockStatus
+            attributes { nodes { name value } }
+          }
+        }
+      }
+    }
+  }
+`
 
 export default function QuickViewModal({ slug, isOpen, onClose }) {
   const { addToCart } = useCart()
@@ -19,31 +48,34 @@ export default function QuickViewModal({ slug, isOpen, onClose }) {
   const [selectedAttributes, setSelectedAttributes] = useState({})
   const [selectedVariation, setSelectedVariation] = useState(null)
 
-  useEffect(() => {
-    // Only fetch once per session, and only when opening
-    if (!slug || !isOpen || product) return
-
-    setLoading(true)
-    fetchProductBySlug(slug)
-      .then(p => {
-        setProduct(p)
-
-        // initialize attributes from first variation
-        const vnodes = p.variations?.nodes || []
-        if (vnodes.length) {
-          const init = {}
-          vnodes[0].attributes.nodes.forEach(({ name, value }) => {
-            init[name] = value
-          })
-          setSelectedAttributes(init)
-        }
-      })
-      .catch(err => console.error('Error fetching product:', err))
-      .finally(() => setLoading(false))
-  }, [slug, isOpen, product])
+  const [loadProduct, { called, data, error }] = useLazyQuery(GET_PRODUCT, {
+    fetchPolicy: 'cache-first',
+    onCompleted(p) {
+      setProduct(p.product)
+      const vnodes = p.product.variations?.nodes || []
+      if (vnodes.length) {
+        const init = {}
+        vnodes[0].attributes.nodes.forEach(({ name, value }) => {
+          init[name] = value
+        })
+        setSelectedAttributes(init)
+      }
+      setLoading(false)
+    },
+    onError(err) {
+      console.error(err)
+      setLoading(false)
+    },
+  })
 
   useEffect(() => {
-    // Update selectedVariation whenever attributes change
+    if (isOpen && !called && !product) {
+      setLoading(true)
+      loadProduct({ variables: { slug } })
+    }
+  }, [isOpen, called, product])
+
+  useEffect(() => {
     const vnodes = product?.variations?.nodes || []
     const match = vnodes.find(v =>
       v.attributes.nodes.every(a => selectedAttributes[a.name] === a.value)
@@ -51,10 +83,8 @@ export default function QuickViewModal({ slug, isOpen, onClose }) {
     setSelectedVariation(match || null)
   }, [selectedAttributes, product])
 
-  // Keep the component mounted so state sticks between opens
   if (!isOpen) return null
 
-  // While loading (or before product arrives), show an inline loading state
   if (loading || !product) {
     return (
       <Transition appear show={isOpen} as={Fragment}>

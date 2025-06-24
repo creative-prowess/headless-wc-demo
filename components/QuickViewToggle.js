@@ -1,4 +1,4 @@
-// components/QuickViewToggle.js
+// components/QuickView/QuickViewToggle.js
 import { FaEye } from 'react-icons/fa'
 import client from '@/lib/apolloClient'
 import { gql } from '@apollo/client'
@@ -11,14 +11,21 @@ const GET_PRODUCT = gql`
       slug
       shortDescription
       image { sourceUrl altText }
-      price
-      stockStatus
-      variations(first: 50) {
-        nodes {
-          id
-          price
-          stockStatus
-          attributes { nodes { name value } }
+
+      ... on SimpleProduct {
+        price
+        stockStatus
+      }
+      ... on VariableProduct {
+        price
+        stockStatus
+        variations(first: 50) {
+          nodes {
+            id
+            price
+            stockStatus
+            attributes { nodes { name value } }
+          }
         }
       }
     }
@@ -29,7 +36,6 @@ export default function QuickViewToggle({ onClick, slug }) {
   return (
     <button
       onMouseEnter={() => {
-        // prime the cache
         client.query({
           query: GET_PRODUCT,
           variables: { slug },
