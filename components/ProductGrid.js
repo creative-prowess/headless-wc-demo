@@ -5,8 +5,8 @@ import QuickViewModal from './QuickView/QuickViewModal'
 export default function ProductGrid({ products = [], loading = false }) {
   const [modalSlug, setModalSlug] = useState(null)
 
-  const handleQuickView = (product) => {
-    setModalSlug(product.slug)
+  const handleQuickView = (slug) => {
+    setModalSlug(slug)
   }
 
   if (loading) {
@@ -37,23 +37,22 @@ export default function ProductGrid({ products = [], loading = false }) {
   return (
     <>
       <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 p-4">
-        {products.map((product, index) => (
-          <ProductCard
-            key={product.slug}
-            product={product}
-            priority={index < 5}
-            onQuickView={() => handleQuickView(product)}
+       {products.map((p, i) => (
+  <ProductCard
+            key={p.slug}
+            product={p}
+            onQuickView={() => handleQuickView(p.slug)}
           />
         ))}
       </div>
 
-      {modalSlug && (
-        <QuickViewModal
+{modalSlug && (
+       <QuickViewModal
           slug={modalSlug}
-          isOpen={!!modalSlug}
+          isOpen
           onClose={() => setModalSlug(null)}
         />
-      )}
+)}
     </>
   )
 }
