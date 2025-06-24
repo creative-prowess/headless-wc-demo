@@ -41,6 +41,7 @@ export default function ProductGrid({ products = [], loading = false }) {
   <ProductCard
             key={p.slug}
             product={p}
+            priority={i < 5} // Pass priority directly based on index
             onQuickView={() => handleQuickView(p.slug)}
           />
         ))}
