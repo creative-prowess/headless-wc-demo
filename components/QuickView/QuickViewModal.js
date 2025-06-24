@@ -16,18 +16,18 @@ export default function QuickViewModal({ slug, isOpen, onClose }) {
   const [product, setProduct] = useState(null)
   const [loading, setLoading] = useState(false)
   const [quantity, setQuantity] = useState(1)
-
-  // **Renamed** to match VariationSelector API
   const [selectedAttributes, setSelectedAttributes] = useState({})
-  const [selectedVariation, setSelectedVariation]     = useState(null)
+  const [selectedVariation, setSelectedVariation] = useState(null)
 
-  // Fetch on open
   useEffect(() => {
-    if (!slug || !isOpen) return
+    // Only fetch once per session, and only when opening
+    if (!slug || !isOpen || product) return
+
     setLoading(true)
     fetchProductBySlug(slug)
       .then(p => {
         setProduct(p)
+
         // initialize attributes from first variation
         const vnodes = p.variations?.nodes || []
         if (vnodes.length) {
@@ -40,10 +40,10 @@ export default function QuickViewModal({ slug, isOpen, onClose }) {
       })
       .catch(err => console.error('Error fetching product:', err))
       .finally(() => setLoading(false))
-  }, [slug, isOpen])
+  }, [slug, isOpen, product])
 
-  // pick matching variation when attributes change
   useEffect(() => {
+    // Update selectedVariation whenever attributes change
     const vnodes = product?.variations?.nodes || []
     const match = vnodes.find(v =>
       v.attributes.nodes.every(a => selectedAttributes[a.name] === a.value)
@@ -51,24 +51,39 @@ export default function QuickViewModal({ slug, isOpen, onClose }) {
     setSelectedVariation(match || null)
   }, [selectedAttributes, product])
 
-  if (loading || !product) return null
+  // Keep the component mounted so state sticks between opens
+  if (!isOpen) return null
 
-  const variations     = product.variations?.nodes || []
-  const hasVariations  = variations.length > 0
-  const stockStatus    = selectedVariation?.stockStatus || product.stockStatus
-  const priceRaw       = selectedVariation?.price ?? product.price
-  const priceNum       = parseFloat(priceRaw.replace(/[^0-9.]/g, '')) || 0
-  const purchasable    = priceNum > 0 && stockStatus === 'IN_STOCK'
+  // While loading (or before product arrives), show an inline loading state
+  if (loading || !product) {
+    return (
+      <Transition appear show={isOpen} as={Fragment}>
+        <Dialog as="div" className="relative z-50" onClose={onClose}>
+          <div className="fixed inset-0 bg-black/40" />
+          <div className="fixed inset-0 flex items-center justify-center">
+            <div className="bg-white p-6 rounded shadow-lg">Loading…</div>
+          </div>
+        </Dialog>
+      </Transition>
+    )
+  }
+
+  const variations    = product.variations?.nodes || []
+  const hasVariations = variations.length > 0
+  const stockStatus   = selectedVariation?.stockStatus || product.stockStatus
+  const priceRaw      = selectedVariation?.price ?? product.price
+  const priceNum      = parseFloat(priceRaw.replace(/[^0-9.]/g, '')) || 0
+  const purchasable   = priceNum > 0 && stockStatus === 'IN_STOCK'
 
   function handleAddToCart() {
     const source = selectedVariation || product
     addToCart({
-      id:       source.id,
-      name:     source.name,
-      slug:     product.slug,
-      price:    priceNum,
+      id: source.id,
+      name: source.name,
+      slug: product.slug,
+      price: priceNum,
       quantity,
-      image:    source.image?.sourceUrl || product.image.sourceUrl,
+      image: source.image?.sourceUrl || product.image.sourceUrl,
     })
     showToast({ name: source.name, image: source.image })
     onClose()
@@ -106,7 +121,6 @@ export default function QuickViewModal({ slug, isOpen, onClose }) {
                     {stockStatus === 'IN_STOCK' ? 'In Stock' : 'Out of Stock'}
                   </div>
                   <div className="text-2xl font-bold">{priceRaw}</div>
-                  
                   {hasVariations && (
                     <VariationSelector
                       variations={variations}
@@ -116,9 +130,7 @@ export default function QuickViewModal({ slug, isOpen, onClose }) {
                       setSelectedVariation={setSelectedVariation}
                     />
                   )}
-
                   <QuantityInput initial={quantity} onChange={setQuantity} />
-
                   <button
                     onClick={handleAddToCart}
                     disabled={!purchasable || (hasVariations && !selectedVariation)}
