@@ -7,8 +7,8 @@ export default function ResponsiveYoutubeEmbed({ youtubeId, poster }) {
   const embedUrl = `https://www.youtube.com/embed/${youtubeId}?autoplay=1&rel=0`;
 
   return (
-    <div className="w-full flex items-center justify-center my-10">
-      <div className="relative w-full max-w-7xl aspect-[16/9] rounded-xl overflow-hidden shadow-lg mx-auto">
+    <div className="w-full flex items-center justify-center my-10 p-4">
+      <div className="relative w-full max-w-7xl aspect-[16/9] overflow-hidden shadow-lg mx-auto">
         {!playing ? (
           <button
             className="absolute inset-0 w-full h-full z-10 flex items-center justify-center group"

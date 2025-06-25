@@ -1,6 +1,7 @@
 import { useKeenSlider } from "keen-slider/react"
 import { useState } from "react"
 import ProductCard from '@/components/ProductCard'
+import QuickViewModal from '@/components/QuickView/QuickViewModal'
 
 function Arrow({ direction, onClick, disabled, className = "" }) {
   // direction = 'left' or 'right'
@@ -16,7 +17,6 @@ function Arrow({ direction, onClick, disabled, className = "" }) {
       `}
       tabIndex={disabled ? -1 : 0}
     >
-      {/* Use explicit left/right SVG */}
       {direction === 'left' ? (
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
           <path d="M15 19l-7-7 7-7" stroke="#333" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
@@ -34,11 +34,14 @@ export default function ProductCardSlider({
   products,
   slidesPerView = 5,
   showArrows = "side", // "side" or "top"
-  className = ""
+  className = "px-4 lg:px-0"
 }) {
   const [current, setCurrent] = useState(0)
+  const [modalSlug, setModalSlug] = useState(null)         // <-- Correct: here!
+  const handleQuickView = (slug) => setModalSlug(slug)      // <-- Correct: here!
+
   const [sliderRef, instanceRef] = useKeenSlider({
-    slides: { perView: slidesPerView, spacing: 24 },
+    slides: { perView: slidesPerView, spacing: 16 },
     breakpoints: {
       "(max-width: 1024px)": { slides: { perView: Math.max(1, slidesPerView - 1), spacing: 16 } },
       "(max-width: 640px)": { slides: { perView: 1, spacing: 8 } }
@@ -48,12 +51,11 @@ export default function ProductCardSlider({
     }
   })
 
-  // Always show arrows for testing; add logic if you want conditional arrows.
   const leftDisabled = current === 0
   const rightDisabled = current >= products.length - slidesPerView
 
   return (
-    <div className={`relative w-full ${className}`}>
+    <div className={`relative max-w-7xl mx-auto ${className}`}>
       {showArrows === "side" && (
         <>
           <Arrow
@@ -71,7 +73,7 @@ export default function ProductCardSlider({
         </>
       )}
       {showArrows === "top" && (
-        <div className="absolute w-full flex justify-between px-4 top-0 z-10 pointer-events-none">
+        <div className="absolute w-full flex justify-between top-0 z-10 pointer-events-none">
           <Arrow
             direction="left"
             onClick={() => instanceRef.current?.prev()}
@@ -86,14 +88,26 @@ export default function ProductCardSlider({
           />
         </div>
       )}
-
-      <div ref={sliderRef} className="keen-slider py-2">
+ <div className="max-w-7xl mx-auto">
+      <div ref={sliderRef} className="keen-slider">
         {products.map((product, idx) => (
           <div className="keen-slider__slide" key={product.id || idx}>
-            <ProductCard product={product} />
+            <ProductCard
+              product={product}
+              onQuickView={() => handleQuickView(product.slug)}
+            />
           </div>
         ))}
       </div>
+ </div>
+      {/* The actual QuickView modal */}
+      {modalSlug && (
+        <QuickViewModal
+          slug={modalSlug}
+          isOpen
+          onClose={() => setModalSlug(null)}
+        />
+      )}
     </div>
   )
 }

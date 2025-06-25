@@ -30,7 +30,7 @@ export default function HeroSection({ data }) {
       : null;
 
   return (
-    <section className="relative w-full min-h-[450px] flex items-center justify-center bg-gray-100 overflow-hidden">
+    <section className="relative w-full min-h-[450px] flex items-center justify-center bg-gray-100 overflow-hidden px-4">
       {/* Background Image */}
       {bgImage?.sourceUrl && (
         <Image
@@ -52,7 +52,7 @@ export default function HeroSection({ data }) {
         />
       )}
 
-      <div className="relative z-20 w-full max-w-4xl mx-auto px-6 py-20 text-center flex flex-col items-center">
+      <div className="relative z-20 w-full max-w-7xl mx-auto px-6 py-20 text-center flex flex-col items-center">
         {/* Optional Extra Image (Logo, product, etc.) */}
         {extraImage?.sourceUrl && (
           <div className="mb-6 w-32 h-32 mx-auto relative">
@@ -61,7 +61,7 @@ export default function HeroSection({ data }) {
               alt={extraImage.altText || ""}
               fill
               className="object-contain object-center"
-              priority={false}
+              priority={true}
               sizes="128px"
             />
           </div>
