@@ -2,7 +2,6 @@ import { useKeenSlider } from "keen-slider/react"
 import { useState } from "react"
 import ProductCard from '@/components/ProductCard'
 import { fetchHomePage } from "@/lib/fetchHomePage"
-import { pages } from "next/dist/build/templates/app-page"
 
 function Arrow({ direction, onClick, disabled, className = "" }) {
   // direction = 'left' or 'right'
