@@ -28,6 +28,7 @@ export default function ProductPage({ product }) {
         <meta property="og:description" content={product?.seo?.openGraph?.description || ''} />
         <meta property="og:image" content={product?.seo?.openGraph?.image?.secureUrl || ''} />
       </Head>
+      <SingleProductPage product={product} />
     </Layout>
   )
 }
