@@ -21,11 +21,14 @@ export async function getStaticPaths() {
     }),
   });
   const json = await res.json();
-  const paths = json?.data?.pages?.nodes
-    ?.filter((node) => node.uri)
-    ?.map((node) => ({
-      params: { slug: node.uri.replace(/\//g, '') },
-    })) || [];
+
+const RESERVED_SLUGS = ['cart', 'checkout', 'shop', ''];
+const paths = json?.data?.pages?.nodes
+  ?.filter(node => node.uri)
+  ?.map(node => ({
+    params: { slug: node.uri.replace(/\//g, '') },
+  }))
+  .filter(({ params }) => !RESERVED_SLUGS.includes(params.slug)) || [];
 
   return {
     paths,
