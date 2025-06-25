@@ -13,11 +13,6 @@ const nextConfig = {
         hostname: 'woocommerce-754985-5615334.cloudwaysapps.com',
         pathname: '/**',
       },
-      {
-        protocol: 'https',
-        hostname: 'via.placeholder.com', // ✅ Add this
-        pathname: '/**',
-      },
     ],
   },
 }
