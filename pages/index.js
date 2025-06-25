@@ -2,20 +2,26 @@
 import Layout from '@/components/Layout'
 import ProductGrid from '@/components/ProductGrid'
 import { fetchProducts } from '@/lib/fetchProductsList'
+import { fetchHomePage } from '@/lib/fetchHomePage'
+import FlexibleSections from '@/components/Acf/FlexibleSections';
 
 export async function getStaticProps() {
-  const products = await fetchProducts()
+  const products = await fetchProducts();
+  const homePage = await fetchHomePage();
   return {
-    props: { products },
-    revalidate: 60, // rebuild every 60s
+    props: { products, homePage },
+    revalidate: 60,
   }
 }
 
-export default function Home({ products }) {
+export default function Home({ products, homePage }) {
+  // Get the Hero data
+  console.log({ homePage });
+  const sections = homePage?.flexibleSections?.sections;
+
   return (
     <Layout>
-      <h1 className="text-3xl font-bold mb-8 p-4">All Products</h1>
-      <ProductGrid products={products} />
+      <FlexibleSections sections={sections} />
     </Layout>
   )
 }
