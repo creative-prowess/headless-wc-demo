@@ -2,6 +2,7 @@
 import { FaEye } from 'react-icons/fa'
 import client from '@/lib/apolloClient'
 import { gql } from '@apollo/client'
+import { fetchProductBySlug } from '@/utils/fetchProductBySlug'
 
 const GET_PRODUCT = gql`
   query GetProductBySlug($slug: ID!) {
@@ -33,17 +34,25 @@ const GET_PRODUCT = gql`
 `
 
 export default function QuickViewToggle({ onClick, slug }) {
+  const prefetch = () => {
+    if (!slug) return
+
+    // Prime Apollo cache with core fields
+    client.query({
+      query: GET_PRODUCT,
+      variables: { slug },
+      fetchPolicy: 'cache-first',
+    })
+
+    // Also fetch full product shape (incl. SEO, description, etc.)
+    fetchProductBySlug(slug).catch(() => {})
+  }
+
   return (
     <button
-      onMouseEnter={() => {
-        if (!slug) return
-        client.query({
-          query: GET_PRODUCT,
-          variables: { slug },
-          fetchPolicy: 'cache-first',
-        })
-      }}
-      onClick={e => {
+      onMouseEnter={prefetch}
+      onFocus={prefetch}
+      onClick={(e) => {
         e.stopPropagation()
         e.preventDefault()
         onClick(slug)

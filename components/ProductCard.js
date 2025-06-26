@@ -90,7 +90,7 @@ export default function ProductCard({ product, onQuickView, priority = false, on
       <div className="relative group">
         <Link href={`/products/${product.slug}`} className="block w-full h-auto bg-gray-100">
           <Image
-            src={product.image?.sourceUrl || '/placeholder.webp'}
+            src={product.image?.sourceUrl || 'https://secure.grannysnaturals.com/wp-content/uploads/woocommerce-placeholder.png'}
             alt={product.image?.altText || product.name}
             width={230} height={230}
             className="object-cover w-full h-auto"

@@ -15,6 +15,7 @@ export default function FlexibleSections({ sections }) {
         switch (section.__typename) {
           case 'FlexibleSectionsSectionsHeroSectionLayout':
             return <HeroSection key={idx} data={section} />;
+            
           case 'FlexibleSectionsSectionsTwoColumnTextLayout':
             return (
               <div key={idx} className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 my-16 px-4 sm:px-0">

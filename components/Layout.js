@@ -15,7 +15,7 @@ export default function Layout({ children }) {
         <meta name="theme-color" content="#f4f3e7" />
       </Head>
       <Header />
-      <main className="flex-1 max-w-7xl mx-auto">{children}</main>
+      <main className="flex-1 w-full mx-auto mb-12">{children}</main>
       <footer className="bg-gray-100 text-center text-sm text-gray-600 p-4">
         &copy; {new Date().getFullYear()} Granny’s{' '}
         <Link href="/shop">

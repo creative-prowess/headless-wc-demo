@@ -129,7 +129,7 @@ query GetProductBySlug($slug: ID!) {
         name: 'Cool Hat',
         price: '$9.99',
         image: {
-          src: 'https://via.placeholder.com/300x300.png?text=Hat',
+          src: 'https://secure.grannysnaturals.com/wp-content/uploads/woocommerce-placeholder.png',
           alt: 'Cool Hat',
         },
       },
@@ -139,7 +139,7 @@ query GetProductBySlug($slug: ID!) {
         name: 'Canvas Bag',
         price: '$19.99',
         image: {
-          src: 'https://via.placeholder.com/300x300.png?text=Bag',
+          src: 'https://secure.grannysnaturals.com/wp-content/uploads/woocommerce-placeholder.png',
           alt: 'Canvas Bag',
         },
       },

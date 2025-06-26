@@ -44,7 +44,7 @@ export default function ProductCardSlider({
     slides: { perView: slidesPerView, spacing: 16 },
     breakpoints: {
       "(max-width: 1024px)": { slides: { perView: Math.max(1, slidesPerView - 1), spacing: 16 } },
-      "(max-width: 640px)": { slides: { perView: 1, spacing: 8 } }
+      "(max-width: 640px)": { slides: { perView: 2, spacing: 8 } }
     },
     slideChanged(slider) {
       setCurrent(slider.track.details.rel)

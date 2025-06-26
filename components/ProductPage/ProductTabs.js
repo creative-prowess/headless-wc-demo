@@ -35,12 +35,12 @@ export default function ProductTabs({ description, specs, reviews }) {
 
   return (
     <div className="mt-12">
-      <div className="flex border-b border-gray-200 gap-8 mb-6">
+      <div className="flex flex-col w-full md:flex-row border-b border-gray-200 gap-8 mb-6">
         {tabs.map(tab => (
           <button
             key={tab.key}
             onClick={() => setActiveTab(tab.key)}
-            className={`pb-3 text-lg font-medium transition-colors border-b-2 -mb-px ${
+            className={`pb-3 text-lg font-medium text-left sm:text-center transition-colors border-b-2 -mb-px ${
               activeTab === tab.key
                 ? 'border-brand text-brand'
                 : 'border-transparent text-gray-500 hover:text-brand hover:border-brand'
