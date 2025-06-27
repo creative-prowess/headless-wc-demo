@@ -153,7 +153,7 @@ const { data, loading, error } = useQuery(GET_PRODUCTS, {
         sku: product.sku || 'N/A',
         price: product.price || '',
         regular_price: product.regularPrice || '',
-        image: product.image?.sourceUrl || 'https://secure.grannysnaturals.com/wp-content/uploads/woocommerce-placeholder.png',
+        image: product.image?.sourceUrl || 'https://consolepartsdepot.com/wp-content/uploads/woocommerce-placeholder.png',
         category: product.productCategories?.nodes?.[0]?.name || 'Uncategorized',
         views: product.metaData?.find((m) => m.key === 'views')?.value || 0,
         stock_status: product.stockStatus || 'UNKNOWN',
