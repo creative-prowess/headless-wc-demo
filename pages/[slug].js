@@ -22,7 +22,7 @@ export async function getStaticPaths() {
   });
   const json = await res.json();
 
-const RESERVED_SLUGS = ['cart', 'checkout', 'shop','dashboard', ''];
+const RESERVED_SLUGS = ['cart', 'checkout', 'shop','dashboard','thank-you', 'login', ''];
 const paths = json?.data?.pages?.nodes
   ?.filter(node => node.uri)
   ?.map(node => ({
