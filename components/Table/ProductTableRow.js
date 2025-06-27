@@ -18,7 +18,7 @@ export default function ProductTableRow({ product,isFirstFewRows = false  }) {
   const stockClass = isOutOfStock ? 'text-red-500' : 'text-green-600'
 
   return (
-    <tr className="border-t hover:bg-gray-50">
+    <tr className="border-t-2 dark:border-t-darker hover:bg-brandblue hover:text-white">
       <td className="p-4">
 <Image
   src={product.image}
@@ -30,7 +30,7 @@ export default function ProductTableRow({ product,isFirstFewRows = false  }) {
 />
       </td>
       <td>{name}</td>
-      <td className="text-sm text-gray-500">{sku}</td>
+      <td className="text-sm">{sku}</td>
       <td>
         {regular_price && regular_price !== price ? (
           <>
@@ -58,7 +58,7 @@ export default function ProductTableRow({ product,isFirstFewRows = false  }) {
       <td className="flex gap-2 items-center justify-center p-2">
         <button><FaEye /></button>
         <button><FaEdit /></button>
-        <button><FaTrash className="text-red-600" /></button>
+        <button><FaTrash className="text-accent" /></button>
       </td>
     </tr>
   )

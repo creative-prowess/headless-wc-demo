@@ -80,14 +80,14 @@ export default function ProductCard({ product, onQuickView, priority = false, on
   }
 
   return (
-    <div className="relative bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+    <div className="relative group bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow">
       {salePrice && (
         <div className="absolute top-2 right-2 bg-red-400 text-white text-xs font-semibold uppercase px-2 py-1 rounded">
           Sale
         </div>
       )}
 
-      <div className="relative group">
+      <div className="relative">
         <Link href={`/products/${product.slug}`} className="block w-full h-auto bg-gray-100">
           <Image
             src={product.image?.sourceUrl || 'https://secure.grannysnaturals.com/wp-content/uploads/woocommerce-placeholder.png'}
@@ -98,24 +98,14 @@ export default function ProductCard({ product, onQuickView, priority = false, on
           />
         </Link>
 
-        {/* Wishlist, Compare, Quick View Buttons */}
-        <div className="absolute top-2 right-2 z-10 space-y-2 opacity-0 group-hover:opacity-100 transform -translate-y-4 group-hover:translate-y-0 transition">
-          <div className="w-10 h-10 bg-white border border-gray-300 rounded-md flex items-center justify-center">
-            <WishlistToggle product={product} />
-          </div>
-          <div className="w-10 h-10 bg-white border border-gray-300 rounded-md flex items-center justify-center">
-            <CompareToggle product={product} />
-          </div>
-          <div className="w-10 h-10 bg-white border border-gray-300 rounded-md flex items-center justify-center">
-            <QuickViewToggle onClick={onQuickView} />
-          </div>
-        </div>
+   
       </div>
 
       <div className="p-4">
         <p className="text-xs text-gray-500 mb-1">{categories.join(', ')}</p>
-        <Link href={`/products/${product.slug}`} className="block text-base font-medium text-gray-900 hover:text-green-600 mb-2">
-          {product.name}
+    
+        <Link href={`/products/${product.slug}`} className="text-base font-medium text-gray-900 hover:text-green-600 mb-2 line-clamp-2">
+         {product.name}
         </Link>
 
         <div className="flex items-center mb-2">
@@ -157,13 +147,25 @@ export default function ProductCard({ product, onQuickView, priority = false, on
             </button>
           ) : (
             <Link href={`/products/${product.slug}`} className="flex-1">
-              <button className="w-full py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded">
+              <button className="w-full py-2 bg-brand hover:bg-blue-700 text-white font-semibold rounded">
                 View Product
               </button>
             </Link>
           )}
         </div>
       </div>
+           {/* Wishlist, Compare, Quick View Buttons */}
+        <div className="absolute top-2 right-2 z-10 space-y-2 opacity-0 group-hover:opacity-100 transform -translate-y-4 group-hover:translate-y-0 transition">
+          <div className="w-10 h-10 bg-white border border-gray-300 rounded-md flex items-center justify-center">
+            <WishlistToggle product={product} />
+          </div>
+          <div className="w-10 h-10 bg-white border border-gray-300 rounded-md flex items-center justify-center">
+            <CompareToggle product={product} />
+          </div>
+          <div className="w-10 h-10 bg-white border border-gray-300 rounded-md flex items-center justify-center">
+            <QuickViewToggle onClick={onQuickView} />
+          </div>
+        </div>
     </div>
   )
 }

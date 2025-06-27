@@ -3,9 +3,12 @@
 import { useState, useMemo,useEffect } from 'react'
 import { gql, useQuery } from '@apollo/client'
 import ProductTableRow from './ProductTableRow'
-import ProductTableFilters from './ProductTableFilters'
-
-
+import {
+  CategoryDropdown,
+  SortByPriceDropdown,
+  SortByDateDropdown,
+} from './ProductTableFilters'
+import {Input } from '@headlessui/react';
 
 const GET_PRODUCTS = gql`
 query GetProducts(
@@ -131,6 +134,9 @@ const { data, loading, error } = useQuery(GET_PRODUCTS, {
   }, [catData])
 
   const products = data?.products?.nodes || []
+
+
+  
   const pageInfo = data?.products?.pageInfo
 
   const handleNextPage = () => {
@@ -163,21 +169,22 @@ const { data, loading, error } = useQuery(GET_PRODUCTS, {
 
   return (
     <>
-      <ProductTableFilters
-        search={search}
-        setSearch={setSearch}
-        category={category}
-        setCategory={setCategory}
-        sortByPrice={sortByPrice}
-        setSortByPrice={setSortByPrice}
-        sortByDate={sortByDate}
-        setSortByDate={setSortByDate}
-        categoryOptions={categoryOptions}
-      />
+    <div className="grid grid-cols-5 gap-3">
+    <CategoryDropdown value={category} onChange={setCategory} options={categoryOptions} />
+<SortByPriceDropdown value={sortByPrice} onChange={setSortByPrice} />
+<SortByDateDropdown value={sortByDate} onChange={setSortByDate} />
+    <Input 
+      type="text" 
+      value={search} 
+      onChange={(e) => setSearch(e.target.value)} 
+      placeholder="Search products..." 
+      className="search-input col-span-2 placeholder:text-darker dark:placeholder:text-white text-darker dark:text-white bg-white dark:bg-dark px-4 py-2 ring-1 ring-gray-700 rounded-md"
+    />
 
-      <table className="w-full text-left border border-gray-200">
-        <thead className="bg-gray-100">
-          <tr>
+</div>
+      <table className="w-full text-left border-2 border-gray-200 dark:border-darker">
+        <thead className="bg-gray-100 dark:bg-brand">
+          <tr className="text-brand dark:text-white">
             <th className="p-4">Image</th>
             <th>Title</th>
             <th>SKU</th>
@@ -189,7 +196,7 @@ const { data, loading, error } = useQuery(GET_PRODUCTS, {
             <th>Actions</th>
           </tr>
         </thead>
-<tbody>
+<tbody className="text-brand dark:text-white">
   {normalizedProducts.map((product, index) => (
     <ProductTableRow key={product.id} product={product} isFirstFewRows={index < 5}/>
   ))}
@@ -198,7 +205,7 @@ const { data, loading, error } = useQuery(GET_PRODUCTS, {
 
       <div className="flex justify-between items-center mt-6">
         <button
-          className="px-4 py-2 bg-gray-200 rounded text-sm hover:bg-gray-300 disabled:opacity-50"
+          className="px-4 py-2 bg-gray-200 rounded text-sm disabled:opacity-50"
           onClick={() => setCursor(null)}
           disabled={!cursor}
         >

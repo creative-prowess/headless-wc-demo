@@ -5,13 +5,21 @@ module.exports = {
     "./components/**/*.{js,ts,jsx,tsx}",
         "./context/**/*.{js,ts,jsx,tsx}" // ✅ <-- Add this if missing
   ],
-  safelist: ['bg-brand', 'hover:bg-accent', 'text-white'], // ✅ Add this
+  safelist: ['bg-brand','bg-brandblue','uppercase','leading-snug','text-custom-65','bg-darker','bg-bluedark','bg-dark', 'hover:bg-accent', 'text-white'], // ✅ Add this
+  darkMode: 'class',
   theme: {
     extend: {
       colors: {
-        brand: '#034c8c',
-        accent: '#dc2626', // Tomato-like red for CTA
+        brand: 'rgb(4 24 34 / 97%)',
+        brandblue: '#034c8c',
+        darker: 'rgb(4 24 34)',
+        bluedark: 'rgb(6 36 51)',
+        dark: '#034c8c',
+        accent: '#ff6347', // Tomato-like red for CTA
         muted: '#6b7280',
+      },
+      fontSize: {
+        'custom-65':  ['clamp(2rem, 5vw, 55px)', { lineHeight: '1.2' }],
       },
       fontFamily: {
         sans: ['Inter', 'ui-sans-serif', 'system-ui'],
@@ -32,5 +40,6 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  plugins: [
+  ],
 }

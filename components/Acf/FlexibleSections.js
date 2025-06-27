@@ -33,7 +33,7 @@ case 'FlexibleSectionsSectionsFullWidthYoutubeVideoLayout':
   );
 case 'FlexibleSectionsSectionsProductCardSliderLayout':
   return (
-    <ProductCardSlider
+    <ProductCardSlider className="mt-10"
   key={idx}
   products={section.products?.nodes || []}
     />

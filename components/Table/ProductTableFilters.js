@@ -1,56 +1,75 @@
-export default function ProductTableFilters({
-  search,
-  setSearch,
-  category,
-  setCategory,
-  sortByPrice,
-  setSortByPrice,
-  sortByDate,
-  setSortByDate,
-  categoryOptions = [],
-}) {
+// components/ProductTableFilters.js
+import { Menu, MenuButton, MenuItem, MenuItems} from '@headlessui/react';
+import { ChevronDownIcon } from '@heroicons/react/20/solid';
+
+const Dropdown = ({ label, options, value, onChange }) => {
+  const selectedLabel = options.find(opt => opt.value === value)?.label || label;
+
   return (
-    <div className="flex flex-wrap items-center gap-4">
-      <select
-        value={category}
-        onChange={e => setCategory(e.target.value)}
-        className="border p-2 rounded"
-      >
-        <option value="all">All categories</option>
-        {categoryOptions.map(option => (
-          <option key={option.value} value={option.value}>
-            {option.label}
-          </option>
-        ))}
-      </select>
+    <Menu as="div" className="relative inline-block text-left">
+      <div>
+        <MenuButton className="w-full h-12 flex justify-between col-span-1 items-center gap-2 hover:text-white rounded-md text-darker dark:text-white 
+         bg-white dark:bg-dark 
+         px-4 py-2 text-sm font-medium ring-1 ring-gray-700 hover:bg-gray-700">
+          {selectedLabel}
+          <ChevronDownIcon className="h-5 w-5 text-gray-300" aria-hidden="true" />
+        </MenuButton>
+      </div>
 
-      <select
-        value={sortByPrice}
-        onChange={e => setSortByPrice(e.target.value)}
-        className="border p-2 rounded"
-      >
-        <option value="">Sort by Price</option>
-        <option value="price_ASC">Price: Low to High</option>
-        <option value="price_DESC">Price: High to Low</option>
-      </select>
+      <MenuItems className="absolute z-10 mt-2 w-56 rounded-md bg-gray-900 shadow-lg ring-1 ring-black/20 focus:outline-none">
+        <div className="py-1">
+          {options.map(option => (
+            <MenuItem key={option.value}>
+              {({ active }) => (
+                <button
+                  onClick={() => onChange(option.value)}
+                  className={`w-full h-12 flex justify-between col-span-1 text-left px-4 py-2 text-sm ${
+                    active ? 'bg-gray-700 text-white' : 'text-gray-300'
+                  }`}
+                >
+                  {option.label}
+                </button>
+              )}
+            </MenuItem>
+          ))}
+        </div>
+      </MenuItems>
 
-      <select
-        value={sortByDate}
-        onChange={e => setSortByDate(e.target.value)}
-        className="border p-2 rounded"
-      >
-        <option value="">Sort by Date</option>
-        <option value="date_DESC">Newest First</option>
-        <option value="date_ASC">Oldest First</option>
-      </select>
-
-      <input
-        type="text"
-        placeholder="Search"
-        className="flex-1 border p-2 rounded"
-        value={search}
-        onChange={e => setSearch(e.target.value)}
-      />
-    </div>
+    </Menu>
   );
-}
+};
+
+export const CategoryDropdown = ({ value, onChange, options }) => (
+  <Dropdown
+    label="All Categories"
+    value={value}
+    onChange={onChange}
+    options={[{ label: 'All Categories', value: 'all' }, ...options]}
+  />
+);
+
+export const SortByPriceDropdown = ({ value, onChange }) => (
+  <Dropdown
+    label="Sort by Price"
+    value={value}
+    onChange={onChange}
+    options={[
+      { label: 'Sort by Price', value: '' },
+      { label: 'Price: Low to High', value: 'price_ASC' },
+      { label: 'Price: High to Low', value: 'price_DESC' },
+    ]}
+  />
+);
+
+export const SortByDateDropdown = ({ value, onChange }) => (
+  <Dropdown
+    label="Sort by Date"
+    value={value}
+    onChange={onChange}
+    options={[
+      { label: 'Sort by Date', value: '' },
+      { label: 'Newest First', value: 'date_DESC' },
+      { label: 'Oldest First', value: 'date_ASC' },
+    ]}
+  />
+);

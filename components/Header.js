@@ -10,6 +10,10 @@ import { TbTruckDelivery } from "react-icons/tb";
 import { useCompare } from '@/context/CompareContext'
 import HeaderIcon from './HeaderIcon'
 import { useState } from 'react'
+import LoginModal from './LoginForm'
+import { useToast } from '@/context/ToastContext'
+import {signOut, useSession} from 'next-auth/react'
+
 import {
   Dialog,
   DialogPanel,
@@ -41,19 +45,55 @@ const callsToAction = [
 ]
 
 export default function Header() {
+
+    const { showToast } = useToast()
+    const { data: session, status } = useSession()
+
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+    const [isLoginOpen, setIsLoginOpen] = useState(false)
   const { count } = useCompare()
   return (
-    <header className="bg-white">
-      <nav aria-label="Global" className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8">
+<div>
+   <header className="bg-white">
+
+    
+    <div className="bg-brandblue text-white text-sm border-b-2 border-b-brandblue/50">
+  <div className="max-w-7xl mx-auto flex justify-between items-center p-4 md:p-0 md:py-4">
+    <div>
+      📧 <a href="mailto:contact@consolepartsdepot.com" className="hover:underline">contact@consolepartsdepot.com</a>
+    </div>
+    <div className="flex space-x-4">
+      <Link href="/account" className="hover:underline">My Account</Link>
+{status === 'loading' ? null : session ? (
+  <button
+    onClick={() => {
+      signOut()
+      showToast(
+        { name: 'You', customLink: { href: '/login', label: 'Log in again' } },
+        'have been logged out.'
+      )
+    }}
+  >
+    Logout
+  </button>
+) : (
+  <button onClick={() => setIsLoginOpen(true)}>Login</button>
+)}
+
+    </div>
+  </div>
+</div>
+      <nav aria-label="Global" className="bg-brandblue">
+        
+        <div className="mx-auto flex max-w-7xl items-center justify-between p-4 lg:px-0">
         <div className="flex lg:flex-1">
    <Link href="/" className="flex items-center">
           <Image
-            src="/grannynaturals-logo.webp"
-            alt="Granny's Naturals Logo"
-            width={112}
-            height={112}
-            className="object-contain w-20 sm:w-28 h-auto"
+            src="/cpd-logo-transparent.webp"
+            alt="Console Parts Depot Logo"
+            width={320}
+            height={75}
+            className="object-contain h-auto"
             priority
           />
         </Link>
@@ -133,6 +173,7 @@ export default function Header() {
         </div>
  
         </div>
+          </div>
       </nav>
       <Dialog open={mobileMenuOpen} onClose={setMobileMenuOpen} className="lg:hidden">
         <div className="fixed inset-0 z-50" />
@@ -140,7 +181,7 @@ export default function Header() {
           <div className="flex items-center justify-between">
             <a href="#" className="-m-1.5 p-1.5">
               <span className="sr-only">Your Company</span>
-              <img
+              <Image
                 alt=""
                 src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=600"
                 className="h-8 w-auto"
@@ -196,17 +237,15 @@ export default function Header() {
                 </a>
               </div>
               <div className="py-6">
-                <a
-                  href="#"
-                  className="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-gray-900 hover:bg-gray-50"
-                >
-                  Log in
-                </a>
+   <button onClick={() => setIsLoginOpen(true)}>Login</button>
               </div>
             </div>
           </div>
         </DialogPanel>
       </Dialog>
+      
     </header>
+          <LoginModal isOpen={isLoginOpen} onClose={() => setIsLoginOpen(false)} />
+            </div>
   )
 }

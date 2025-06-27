@@ -103,8 +103,8 @@ export default function QuickViewModal({ slug, isOpen, onClose }) {
               </div>
               <div className="grid md:grid-cols-2 gap-6 p-6">
                 <Image
-                  src={product.image.sourceUrl}
-                  alt={product.image.altText || product.name}
+                  src={product.image?.sourceUrl}
+                  alt={product.image?.altText || product.name}
                   width={600}
                   height={400}
                   className="object-contain rounded"

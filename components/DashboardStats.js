@@ -4,12 +4,12 @@ import useSWR from 'swr'
 const fetcher = (url) => fetch(url).then((res) => res.json())
 
 const StatCard = ({ label, value }) => (
-  <div className="bg-white rounded shadow-sm p-5 flex justify-between items-center w-full max-w-[250px]">
+  <div className="bg-white dark:bg-darker rounded shadow-sm p-5 flex justify-between items-center w-full max-w-[250px]">
     <div>
-      <p className="text-sm text-gray-500 font-semibold">{label}</p>
-      <p className="text-xl font-bold text-gray-800">{value}</p>
+      <p className="text-sm text-gray-500 dark:text-white font-semibold">{label}</p>
+      <p className="text-xl font-bold text-gray-800 dark:text-white">{value}</p>
     </div>
-    <div className="w-10 h-10 rounded-full bg-blue-200 flex items-center justify-center">
+    <div className="w-10 h-10 rounded-full bg-blue-200 dark:bg-bluedark flex items-center justify-center">
       💰
     </div>
   </div>
@@ -26,7 +26,7 @@ export default function DashboardStats() {
       <StatCard label="Total Sales" value={data.totalSalesCount} />
       <StatCard
         label="Total Sales Amount"
-        value={`$${data.totalSalesAmount}`}
+        value={`$${data.totalSalesAmount.toFixed(2)}`}
       />
       <StatCard
         label="Total Product Views"
@@ -34,7 +34,7 @@ export default function DashboardStats() {
       />
       <StatCard
         label="Today's Sales"
-        value={`$${data.todaySalesAmount}`}
+        value={`$${data.todaySalesAmount.toFixed(2)}`}
       />
     </div>
   )

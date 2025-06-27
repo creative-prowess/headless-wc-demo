@@ -80,8 +80,9 @@ export async function getStaticProps() {
 export default function ShopPage({ products = [] }) {
   return (
     <Layout>
-      <h1 className="text-3xl font-bold mt-6 mb-8 p-4">Shop</h1>
-      <ProductGrid products={products} />
+      <div className="max-w-7xl mx-auto p-4 md:p-0 lg:flex gap-8">
+      <h1 className="text-3xl font-bold my-6 w-full">Shop</h1></div>
+      <div className="max-w-7xl mx-auto  lg:flex"> <ProductGrid products={products} /></div>
     </Layout>
   )
 }

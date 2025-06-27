@@ -10,13 +10,21 @@ import { CompareProvider } from '@/context/CompareContext'
 import { CookieConsentProvider } from '@/context/CookieConsentContext'
 import CookieConsentBanner from '@/components/CookieConsentBanner'
 import CookieSettingsModal from '@/components/CookieSettingsModal'
+import { SessionProvider } from 'next-auth/react'
 
-
-export default function App({ Component, pageProps }) {
-
+export default function App({ Component, pageProps: { session, ...pageProps } }) {
+useEffect(() => {
+  const savedTheme = localStorage.getItem('theme')
+  if (savedTheme === 'dark') {
+    document.documentElement.classList.add('dark')
+  } else {
+    document.documentElement.classList.remove('dark')
+  }
+}, [])
   return (
 <ApolloProvider client={client}>
-   <CookieConsentProvider>
+    
+   <CookieConsentProvider>  <SessionProvider session={session}>
   <CartProvider>
     <WishlistProvider>
       <CompareProvider>
@@ -28,7 +36,9 @@ export default function App({ Component, pageProps }) {
       </CompareProvider>
     </WishlistProvider>
   </CartProvider>
-  </CookieConsentProvider>
+   </SessionProvider> 
+   </CookieConsentProvider>
+
 </ApolloProvider>
   )
 }

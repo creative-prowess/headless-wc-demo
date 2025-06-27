@@ -14,29 +14,12 @@ export async function getStaticProps() {
 
 export default function Home({ products, homePage }) {
   // Get the Hero data
-  console.log({ homePage });
+  //console.log({ homePage });
   const sections = homePage?.flexibleSections?.sections;
-
-    const faqItems = [
-    {
-      label: 'What is your return policy?',
-      content: 'You may return most new, unopened items within 30 days of delivery for a full refund.'
-    },
-    {
-      label: 'Do you ship internationally?',
-      content: 'Yes, we ship to over 50 countries worldwide. Shipping fees apply.'
-    },
-    {
-      label: 'How do I track my order?',
-      content: 'Once your order ships, you will receive a tracking number via email.'
-    }
-  ]
-
 
   return (
     <Layout>
       <FlexibleSections sections={sections} />
-
     </Layout>
   )
 }

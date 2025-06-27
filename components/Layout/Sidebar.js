@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 import { FaHome, FaShoppingCart, FaUser, FaChartPie, FaMoneyCheckAlt } from 'react-icons/fa'
 
 const navItems = [
-  { label: 'Dashboard', icon: <FaHome />, section: 'dashboard' },
+  { label: 'Dashboard', icon: <FaHome />, section: 'dashboard' ,},
   { label: 'Products', icon: <FaShoppingCart />, section: 'products' },
 ]
 
@@ -34,8 +34,8 @@ export default function Sidebar() {
   }
 
   return (
-    <aside className="w-[250px] min-h-screen bg-gray-100 border-r px-4 py-6 hidden md:flex flex-col gap-6">
-      <div className="text-lg font-bold px-2">Vendor Dashboard</div>
+    <aside className="w-[250px] min-h-screen bg-gray-100  dark:bg-brand border-r px-4 py-6 hidden md:flex flex-col gap-6">
+      <div className="text-lg font-bold px-2 dark:text-white">Vendor Dashboard</div>
 
       <nav className="flex flex-col gap-2">
         {navItems.map((item) => (

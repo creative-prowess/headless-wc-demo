@@ -7,10 +7,9 @@ export const ToastProvider = ({ children }) => {
   const [toast, setToast] = useState(null)
   const [visible, setVisible] = useState(false)
 
-const showToast = (product, message = 'has been added to your cart.') => {
-  setToast({ ...product, message })
+const showToast = (data, message = 'has been added to your cart.') => {
+  setToast({ ...data, message })
   setVisible(true)
-
   setTimeout(() => {
     setVisible(false)
     setTimeout(() => setToast(null), 300)

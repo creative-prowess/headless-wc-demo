@@ -45,3 +45,13 @@ main{width:100%;}
 .toast-slide-out {
   animation: toastSlideOut 0.4s ease-in forwards;
 }
+
+
+.hero-overlay:before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: var(--hero-overlay-gradient, none);
+  z-index: 5;
+}

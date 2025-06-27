@@ -8,6 +8,11 @@ const nextConfig = {
         hostname: 'secure.grannysnaturals.com',
         pathname: '/**',
       },
+            {
+        protocol: 'https',
+        hostname: 'consolepartsdepot.com',
+        pathname: '/**',
+      },
       {
         protocol: 'https',
         hostname: 'woocommerce-754985-5615334.cloudwaysapps.com',
