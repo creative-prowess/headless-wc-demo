@@ -59,7 +59,7 @@ export default function Header() {
     
     <div className="bg-brandblue text-white text-sm border-b-2 border-b-brandblue/50">
   <div className="max-w-7xl mx-auto flex justify-between items-center p-4 md:p-0 md:py-4">
-    <div>
+    <div className="hidden sm:flex">
       📧 <a href="mailto:contact@consolepartsdepot.com" className="hover:underline">contact@consolepartsdepot.com</a>
     </div>
     <div className="flex space-x-4">
