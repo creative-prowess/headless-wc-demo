@@ -1,10 +1,10 @@
-/** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
     "./pages/**/*.{js,ts,jsx,tsx}",
     "./components/**/*.{js,ts,jsx,tsx}",
-        "./context/**/*.{js,ts,jsx,tsx}" // ✅ <-- Add this if missing
+        "./context/**/*.{js,ts,jsx,tsx}", 
   ],
+  
   safelist: ['bg-brand','bg-brandblue','uppercase','leading-snug','text-custom-65','bg-darker','bg-bluedark','bg-dark', 'hover:bg-accent', 'text-white'], // ✅ Add this
   darkMode: 'class',
   theme: {

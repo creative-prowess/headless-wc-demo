@@ -3,3 +3,4 @@
 node_modules/
 .next/
 out/
+/pages/node_modules/

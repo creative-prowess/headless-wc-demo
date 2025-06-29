@@ -7,10 +7,11 @@ import AccountMenu from './AccountMenu'
 import HeaderIcon from './HeaderIcon'
 import { LuGitCompareArrows } from 'react-icons/lu'
 import { useCompare } from '@/context/CompareContext'
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect} from 'react'
 import LoginModal from './LoginForm'
 import { useToast } from '@/context/ToastContext'
 import { signOut, useSession } from 'next-auth/react'
+
 
 // Headless UI
 import { Dialog, DialogPanel, Popover, PopoverGroup, PopoverButton, PopoverPanel } from '@headlessui/react'
@@ -31,6 +32,12 @@ export default function Header() {
   const { data: session, status } = useSession()
   const { count } = useCompare()
 
+
+  const headerRef = useRef(null)
+  const mainRef   = useRef(null)
+    const [scrollDir, setScrollDir] = useState('up')  // no TS generic here
+
+
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [isLoginOpen, setIsLoginOpen] = useState(false)
 
@@ -38,6 +45,9 @@ export default function Header() {
   const [catOpen, setCatOpen] = useState(false)
   const [catSearch, setCatSearch] = useState('')
   const catRef = useRef(null)
+
+
+
 
   // Close on outside click
   useEffect(() => {
@@ -54,9 +64,17 @@ export default function Header() {
     c.toLowerCase().includes(catSearch.toLowerCase())
   )
 
+
   return (
     <div>
-      <header className="bg-white">
+      <header
+        ref={headerRef}
+        className={`
+         top-0 left-0 right-0 z-50
+          transition-transform duration-300 ease-in-out
+          ${scrollDir === 'down' ? '-translate-y-full' : 'translate-y-0'}
+        `}
+      >
         {/* Top Utility Bar */}
         <div className="bg-brandblue text-white text-sm border-b-2 border-b-brandblue/50">
           <div className="max-w-7xl mx-auto flex justify-between items-center p-4 md:p-0 md:py-4">
@@ -134,7 +152,7 @@ export default function Header() {
             <div ref={catRef} className="relative">
               <button
                 onClick={() => setCatOpen(o => !o)}
-                className="bg-green-600 hover:bg-green-700 px-3 py-1 h-12 inline-flex items-center"
+                className="bg-green-600 hover:bg-green-700 px-3 py-1 h-12 w-56 inline-flex items-center"
               >
                 <span className="mr-5">Browse Categories</span>
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
@@ -144,7 +162,7 @@ export default function Header() {
               </button>
 
               {catOpen && (
-                <div className="absolute mt-1 bg-white text-gray-900 rounded shadow-lg w-56 max-h-64 overflow-hidden z-50">
+                <div className="absolute  bg-white text-gray-900 shadow-lg w-56 max-h-64 overflow-hidden z-50">
                   <input
                     type="text"
                     value={catSearch}
@@ -169,7 +187,7 @@ export default function Header() {
             </div>
 
             {/* Main Links */}
-            <nav className="space-x-6 hidden md:flex">
+            <nav className="space-x-6 hidden md:flex mr-auto ml-5">
               <Link href="/">
                Home
               </Link>

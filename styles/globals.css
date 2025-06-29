@@ -2,6 +2,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+/* Pull in Preline’s compiled CSS */
+@import "preline/variants.css";
 
 body{  margin: 0;
   padding: 0;
@@ -46,7 +48,9 @@ main{width:100%;}
   animation: toastSlideOut 0.4s ease-in forwards;
 }
 
-
+:root {
+  --header-h: 174px;
+}
 .hero-overlay:before {
   content: "";
   position: absolute;

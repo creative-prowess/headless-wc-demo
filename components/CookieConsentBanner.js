@@ -1,9 +1,17 @@
 import { useCookieConsent } from '@/context/CookieConsentContext'
+import { useState, useEffect } from 'react'
+
+function useHydrated() {
+  const [hydrated, setHydrated] = useState(false)
+  useEffect(() => setHydrated(true), [])
+  return hydrated
+}
 
 export default function CookieConsentBanner() {
+  const hydrated = useHydrated()
   const { consentSet, savePrefs, setShowSettings } = useCookieConsent()
 
-  if (consentSet) return null
+  if (!hydrated || consentSet) return null // 🚫 Don't render until hydrated
 
   return (
     <div className="fixed bottom-0 inset-x-0 bg-white p-4 shadow-lg z-50 border-t border-gray-200">

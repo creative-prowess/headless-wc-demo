@@ -1,6 +1,7 @@
-/** @type {import('next').NextConfig} */
+/** @type {import('@/pages/node_modules/next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+   trailingSlash: true,
   images: {
     remotePatterns: [
       {

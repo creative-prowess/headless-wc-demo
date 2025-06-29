@@ -10,35 +10,37 @@ import { CompareProvider } from '@/context/CompareContext'
 import { CookieConsentProvider } from '@/context/CookieConsentContext'
 import CookieConsentBanner from '@/components/CookieConsentBanner'
 import CookieSettingsModal from '@/components/CookieSettingsModal'
+import AnalyticsGate from '@/components/AnalyticsGate'
 import { SessionProvider } from 'next-auth/react'
 
 export default function App({ Component, pageProps: { session, ...pageProps } }) {
-useEffect(() => {
-  const savedTheme = localStorage.getItem('theme')
-  if (savedTheme === 'dark') {
-    document.documentElement.classList.add('dark')
-  } else {
-    document.documentElement.classList.remove('dark')
-  }
-}, [])
-  return (
-<ApolloProvider client={client}>
-    
-   <CookieConsentProvider>  <SessionProvider session={session}>
-  <CartProvider>
-    <WishlistProvider>
-      <CompareProvider>
-        <ToastProvider>
-          <Component {...pageProps} />
-          <CookieConsentBanner />
-      <CookieSettingsModal />
-        </ToastProvider>
-      </CompareProvider>
-    </WishlistProvider>
-  </CartProvider>
-   </SessionProvider> 
-   </CookieConsentProvider>
+  useEffect(() => {
+    const savedTheme = localStorage.getItem('theme')
+    if (savedTheme === 'dark') {
+      document.documentElement.classList.add('dark')
+    } else {
+      document.documentElement.classList.remove('dark')
+    }
+  }, [])
 
-</ApolloProvider>
+  return (
+    <ApolloProvider client={client}>
+      <CookieConsentProvider>
+        <SessionProvider session={session}>
+          <CartProvider>
+            <WishlistProvider>
+              <CompareProvider>
+                <ToastProvider>
+                  <Component {...pageProps} />
+                  <CookieConsentBanner />
+                  <CookieSettingsModal />
+                  <AnalyticsGate />
+                </ToastProvider>
+              </CompareProvider>
+            </WishlistProvider>
+          </CartProvider>
+        </SessionProvider>
+      </CookieConsentProvider>
+    </ApolloProvider>
   )
 }

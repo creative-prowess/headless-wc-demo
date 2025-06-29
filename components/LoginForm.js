@@ -5,7 +5,16 @@ import { useEffect } from 'react'
 
 export default function LoginModal({ isOpen, onClose }) {
   if (!isOpen) return null
+  const { data: session, status } = useSession()
+  const { showToast } = useToast()
 
+  // Show toast when login is successful
+  useEffect(() => {
+    if (status === 'authenticated') {
+      showToast('Successfully logged in', 'success')
+      onClose() // Close modal
+    }
+  }, [status])
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
       <div className="bg-white rounded-lg shadow-lg overflow-hidden max-w-sm lg:max-w-4xl w-full">
