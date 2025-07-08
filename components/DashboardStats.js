@@ -28,14 +28,15 @@ export default function DashboardStats() {
         label="Total Sales Amount"
         value={`$${data.totalSalesAmount.toFixed(2)}`}
       />
-      <StatCard
-        label="Total Product Views"
-        value={data.totalProductViews}
-      />
-      <StatCard
-        label="Today's Sales"
-        value={`$${data.todaySalesAmount.toFixed(2)}`}
-      />
+<StatCard
+  label="Total Sales Amount"
+  value={`$${Number(data.totalSalesAmount || 0).toFixed(2)}`}
+/>
+
+<StatCard
+  label="Today's Sales"
+  value={`$${Number(data.todaySalesAmount || 0).toFixed(2)}`}
+/>
     </div>
   )
 }
