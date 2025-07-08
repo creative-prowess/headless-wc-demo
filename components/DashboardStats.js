@@ -26,7 +26,7 @@ export default function DashboardStats() {
       <StatCard label="Total Sales" value={data.totalSalesCount} />
       <StatCard
         label="Total Sales Amount"
-        value={`$${data.totalSalesAmount.toFixed(2)}`}
+        value={`$${Number(data.totalSalesAmount || 0).toFixed(2)}`}
       />
 <StatCard
   label="Total Sales Amount"
